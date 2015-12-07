@@ -1,2 +1,2 @@
-float SPRING_CONST = 15;
-float BUNDLE_CONST = 1500;
+float SPRING_CONST = 25;
+float BUNDLE_CONST = 1200;

@@ -25,6 +25,11 @@ public class Edge {
         initControlPoints();
 
     }
+    
+    // Returns true if e is the same edge
+    public boolean equals(Edge e) {
+        return left.id == e.left.id && right.id == e.right.id;
+    }
 
     // always populate left to right
     private void initControlPoints() {
@@ -96,7 +101,7 @@ public class Edge {
                 vline(cps[i-1].getPosition(), cps[i].getPosition());
             }
             if (i < NUM_SUBS) {
-                cps[i].render(2);
+               // cps[i].render(2);
             }
 
         }
