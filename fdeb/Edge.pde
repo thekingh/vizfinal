@@ -31,21 +31,28 @@ public class Edge {
         return left.id == e.left.id && right.id == e.right.id;
     }
 
+    // Returns true if this edge has an angle > 45
+    public boolean isVertical() {
+        float angle = PVector.sub(left.pos,right.pos).heading();
+        return (angle > PI*.25 && angle < PI * .75) ||
+               (angle > PI*1.25 && angle < PI * 1.75);
+    }
+
     // always populate left to right
     private void initControlPoints() {
         
         if(right == null || left == null) {
-            println("FUCK");
+            //println("FUCK");
         }
         
         PVector dir = PVector.sub(right.getPosition(), left.getPosition()); //watch out if n1 posn == n2 posn
         dir.normalize();
         float segmentLength = len / (NUM_SUBS+1);
-        println("SL: " + segmentLength);
+        //println("SL: " + segmentLength);
         for (int i = 0; i < NUM_SUBS; i++) {
             cps[i] = new ControlPoint(PVector.add(left.getPosition(),
                                       PVector.mult(dir, segmentLength * (i+1))));
-            println("cpx: " + cps[i].getPosition().x);
+            //println("cpx: " + cps[i].getPosition().x);
         }
     }
 
@@ -77,8 +84,15 @@ public class Edge {
 
     // Apply forces from incoming edge to this edge
     public void applyBundleForces(Edge e) {
+       // Check if we need to do a vertical scan of control points 
+       boolean vertical = isVertical() || e.isVertical();
+       boolean divergent = (left.pos.y < right.pos.y && 
+                           e.left.pos.y > e.right.pos.y) ||
+                          (left.pos.y > right.pos.y &&
+                           e.left.pos.y < e.right.pos.y);
+       // boolean vertical = false;
        for (int i = 0; i < NUM_SUBS; i++) {
-           cps[i].applyBundleForce(e.cps[i]);        
+           cps[vertical && divergent ? NUM_SUBS-1-i : i].applyBundleForce(e.cps[i]);        
        }
     }
 
