@@ -13,7 +13,8 @@ void setup() {
 
 void draw() {
     background(200, 200, 200);
-    for (int i = 0; i < 2000; i++) {
+    float frameSkips = 300;
+    for (int i = 0; i < frameSkips; i++) {
         graph.update(.001);
     }
     graph.render();
