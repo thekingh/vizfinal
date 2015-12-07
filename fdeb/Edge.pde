@@ -38,26 +38,67 @@ public class Edge {
         float segmentLength = len / (NUM_SUBS+1);
         println("SL: " + segmentLength);
         for (int i = 0; i < NUM_SUBS; i++) {
-            cps[i] = new ControlPoint(PVector.add(left.getPosition(), PVector.mult(dir, segmentLength * (i+1))));
+            cps[i] = new ControlPoint(PVector.add(left.getPosition(),
+                                      PVector.mult(dir, segmentLength * (i+1))));
             println("cpx: " + cps[i].getPosition().x);
         }
+    }
+
+    public void zeroForces() {
+       for (ControlPoint cp : cps) {
+            cp.zeroForce();
+       }
+    }
+
+    // Call this once per edge update cycle
+    public void applySpringForces() {
+        float localSF = SPRING_CONST / (NUM_SUBS+1);
+        for (int i = 0; i < NUM_SUBS; i++) {
+            if (i == 0) {
+                // Apply force from left
+                cps[i].applySpringForce(left.getPosition(),     len / (NUM_SUBS + 1));
+                cps[i].applySpringForce(cps[i+1].getPosition(), len / (NUM_SUBS + 1));
+            } else if (i == NUM_SUBS - 1) {
+                // Apply force from right
+                cps[i].applySpringForce(right.getPosition(),    len / (NUM_SUBS + 1));
+                cps[i].applySpringForce(cps[i-1].getPosition(), len / (NUM_SUBS + 1));
+            } else {
+                // Apply forces between cps
+                cps[i].applySpringForce(cps[i+1].getPosition(), len / (NUM_SUBS + 1));
+                cps[i].applySpringForce(cps[i-1].getPosition(), len / (NUM_SUBS + 1));
+            }
+        }
+    }
+
+    // Apply forces from incoming edge to this edge
+    public void applyBundleForces(Edge e) {
+       for (int i = 0; i < NUM_SUBS; i++) {
+           cps[i].applyBundleForce(e.cps[i]);        
+       }
+    }
+
+    public void update(float t) {
+       for (ControlPoint cp : cps) {
+            cp.update(t);
+       }
     }
 
     public void render() {
         pushStyle();
         fill(0);
         
-        for(int i = 0; i < NUM_SUBS; i++) {
+        for(int i = 0; i <= NUM_SUBS; i++) {
             if(i == 0) {
                 vline(left.getPosition(), cps[i].getPosition());
-            } else if (i == NUM_SUBS - 1) {
-                vline(cps[i].getPosition(), right.getPosition());
+            } else if (i == NUM_SUBS) {
+                vline(cps[i-1].getPosition(), right.getPosition());
             } else {
-                vline(cps[i].getPosition(), cps[i+1].getPosition());
+                vline(cps[i-1].getPosition(), cps[i].getPosition());
+            }
+            if (i < NUM_SUBS) {
+                cps[i].render(2);
             }
 
-            //TODO cp.render()
-            ellipse(cps[i].getPosition().x, cps[i].getPosition().y, 10, 10);
         }
 
         popStyle();

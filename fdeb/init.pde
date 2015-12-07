@@ -1,0 +1,2 @@
+float SPRING_CONST = 15;
+float BUNDLE_CONST = 1500;

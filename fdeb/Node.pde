@@ -1,5 +1,5 @@
 color NodeColor  = color(255, 0, 0);
-float NodeRadius = 7.0;
+float NodeRadius = 2.0;
 
 public class Node {
 
