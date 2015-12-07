@@ -103,6 +103,20 @@ public class Edge {
     }
 
     public void render() {
+
+        // Draws a ghost of pre-bundled edge
+        if (SHOW_ORIGINAL) {
+            pushStyle();
+            fill(0,.02);
+            float pixel_spacing = 12;
+            float n_pts = PVector.dist(left.pos, right.pos) / pixel_spacing;
+            for (int i = 0; i < n_pts; i++) {
+                PVector pt = PVector.lerp(left.pos, right.pos, i/n_pts);
+                ellipse(pt.x, pt.y, 1, 1);
+            }
+            popStyle();
+        }
+
         pushStyle();
         fill(0);
         

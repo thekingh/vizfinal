@@ -5,14 +5,14 @@ void setup() {
     //float dist_apart = random(height/2);
     graph = new FDEB_Graph();
 
-    int n_paths = 2;
+    int n_paths = 8;
     for (int i = 0; i < n_paths; i++) {
         // random
-        // graph.addPath(random(width), random(height), random(width), random(height));
+        graph.addPath(random(width), random(height), random(width), random(height));
     }
     // Vertical lines test
-     graph.addPath(350, 400, 250, 200);
-     graph.addPath(400, 400, 450, 250);
+     // graph.addPath(350, 400, 250, 200);
+     // graph.addPath(400, 400, 450, 250);
 }
 
 void draw() {
