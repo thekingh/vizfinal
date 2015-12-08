@@ -26,6 +26,7 @@ public class Edge {
 
     }
 
+/*
     private float scaleCompatibility(e)
     {    
     }
@@ -33,6 +34,7 @@ public class Edge {
     public float get EdgeVector(boolean )
     {
     }
+    */
     
     // Returns true if e is the same edge
     public boolean equals(Edge e) {
