@@ -48,7 +48,7 @@ public class ControlPoint {
     }
 
     // applies attraction force from given control point onto this control point
-    public void applyBundleForce(ControlPoint cp) {
+    public void applyBundleForce(ControlPoint cp, float coeff) {
         PVector force = PVector.sub(cp.getPosition(), pos);
         force.normalize();
         
@@ -56,6 +56,7 @@ public class ControlPoint {
         if (r < 1) return;
         force.mult(BUNDLE_CONST/(r*r));
         // force.mult(BUNDLE_CONST / r);
+        force.mult(coeff);
         f.add(force);
     }
 

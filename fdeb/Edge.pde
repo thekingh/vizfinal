@@ -9,6 +9,7 @@ public class Edge {
 
     Node left, right;
     Node top, bottom; 
+    PVector initState;
 
     public Edge() {
         this(new Node(), new Node());
@@ -30,6 +31,8 @@ public class Edge {
         cps = new ControlPoint[NUM_SUBS];
         initControlPoints();
         isCPSTopDown = left.getPosition().y < right.getPosition().y;
+
+        initState = PVector.sub(right.getPosition(), left.getPosition());
     }
 
 /*
@@ -134,16 +137,56 @@ public class Edge {
     // Apply forces from incoming edge to this edge
     public void applyBundleForces(Edge e) {
         CPOrder cpOrder = calcCPOrder(e);
+        float coeff = getCompatibilityCoefficient(e, cpOrder);
         for (int i = 0; i < NUM_SUBS; i++) {
             int index = i;
             if (cpOrder == CPOrder.TOP_DOWN || cpOrder == CPOrder.BOTTOM_UP) { 
                 index = isCPSTopDown == e.isCPSTopDown ? i : NUM_SUBS-1-i;
             }
-            cps[index].applyBundleForce(e.cps[i]);        
+            cps[index].applyBundleForce(e.cps[i], coeff);        
         }
     }
 
-    public void drawBundeForce(Edge e)
+    public float getCompatibilityCoefficient(Edge e, CPOrder cpo) {
+        float c = 1.0;
+        
+        if (ANGLESWITCH) {
+            c *= getAngleCoefficient(e, cpo);
+        } 
+
+        if(LENSWITCH) {
+            c *= getLengthCoefficient(e);
+        }
+
+/*        println("len coeff: " + c);*/
+        /* TODO more constraints lol */
+
+        return c;
+    }
+
+    public float getLengthCoefficient(Edge e) {
+
+        float avgLen = (this.len + e.len)/2;
+        float maxLen = max(this.len, e.len);
+
+        float lc = 1 - ((maxLen - avgLen)/avgLen);
+
+        return lc * 2;
+    }
+
+    public float getAngleCoefficient(Edge e, CPOrder cpo) {
+        float m = 1;
+        if (cpo == CPOrder.TOP_DOWN || cpo == CPOrder.BOTTOM_UP) { 
+            m = (isCPSTopDown == e.isCPSTopDown) ? 1 : -1;
+        }
+
+        float ac = PVector.dot(this.initState, PVector.mult(e.initState, m));
+        ac /= (this.len * e.len);
+/*        return abs(ac);*/
+        return ac * ac;
+    }
+
+    public void drawBundleForce(Edge e)
     {
         CPOrder cpOrder = calcCPOrder(e);
         for (int i = 0; i < NUM_SUBS; i++) {

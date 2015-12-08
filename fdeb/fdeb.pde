@@ -5,6 +5,7 @@ void setup() {
     //float dist_apart = random(height/2);
     graph = new FDEB_Graph();
 
+    // RANDOM GEN LINES
     int n_paths = 8;
     for (int i = 0; i < n_paths; i++) {
         // random
@@ -12,9 +13,9 @@ void setup() {
     }
 
     // graph.generate();
-    // Vertical lines test
-     graph.addPath(200, 300, 500, 350);
-     graph.addPath(250, 320, 550, 290);
+    // MANUAL GEN LINES
+/*     graph.addPath(240, 200, 460, 200);*/
+/*     graph.addPath(240, 200, 500, 630);*/
 
     //graph.addPath(100, 100, width/2 + 100, height-100);
     //graph.addPath(width - 100, 100, width/2 - 100, height -100);
@@ -27,7 +28,7 @@ void draw() {
         if (graph.running_time < STARTUP_TIME || graph.total_energy > MAG_CUTOFF)
             graph.update(.001);
     }
-    if (DRAW_BUNDLE_FORCE)
+    if (DRAW_BUNDLE_FORCE && LENSWITCH)
         graph.renderBundleForce();
     graph.render();
 }
@@ -47,6 +48,14 @@ void keyPressed() {
         println("BAND ON");
    else
         println("BOND OFF");
+
+    if( key == 'c') {
+        LENSWITCH = !LENSWITCH;
+    }
+
+    if(key == 'a') {
+        ANGLESWITCH = !ANGLESWITCH;
+    }
 }
 void vline(PVector p1, PVector p2) {
     line(p1.x, p1.y, p2.x, p2.y);

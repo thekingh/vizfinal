@@ -40,7 +40,7 @@ class FDEB_Graph
     public void renderBundleForce() {
         for (Edge e1 : edges) {
             for (Edge e2 : edges) {
-                e1.drawBundeForce(e2);
+                e1.drawBundleForce(e2);
             }
         }
     }
