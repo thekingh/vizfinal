@@ -4,9 +4,11 @@ public class Edge {
 
     Node n1, n2; // make ints for optimization?
     ControlPoint[] cps;
+    boolean isCPSTopDown;
     float len;
 
     Node left, right;
+    Node top, bottom; 
 
     public Edge() {
         this(new Node(), new Node());
@@ -19,13 +21,16 @@ public class Edge {
 
         left  = (n1.getPosition().x  < n2.getPosition().x) ? n1 : n2;
         right = (n1.getPosition().x >= n2.getPosition().x) ? n1 : n2;
+
+        top  = (n1.getPosition().y  < n2.getPosition().y) ? n1 : n2;
+        bottom = (n1.getPosition().y >= n2.getPosition().y) ? n1 : n2;
+
         len = PVector.dist(n1.getPosition(),n2.getPosition());
 
         cps = new ControlPoint[NUM_SUBS];
         initControlPoints();
-
+        isCPSTopDown = left.getPosition().y < right.getPosition().y;
     }
-
 /*
     private float scaleCompatibility(e)
     {    
@@ -34,7 +39,7 @@ public class Edge {
     public float get EdgeVector(boolean )
     {
     }
-    */
+*/
     
     // Returns true if e is the same edge
     public boolean equals(Edge e) {
@@ -46,6 +51,33 @@ public class Edge {
         float angle = PVector.sub(left.pos,right.pos).heading();
         return (angle > PI*.25 && angle < PI * .75) ||
                (angle > PI*1.25 && angle < PI * 1.75);
+    }
+
+    //returns the order in which CPs should be matched
+    public CPOrder calcCPOrder(Edge e)
+    {
+        float leftDist = PVector.dist(left.getPosition(), 
+                                      e.left.getPosition());
+        float rightDist = PVector.dist(right.getPosition(),
+                                       e.right.getPosition());
+        float topDist = PVector.dist(top.getPosition(),
+                                     e.top.getPosition());
+        float bottomDist = PVector.dist(bottom.getPosition(),
+                                        e.bottom.getPosition());
+        CPOrder cpOrder = CPOrder.LEFT_RIGHT;
+        if (leftDist <= leftDist && leftDist <= rightDist && 
+            leftDist <= topDist && leftDist <= bottomDist)
+            cpOrder = CPOrder.LEFT_RIGHT;
+        else if (rightDist <= leftDist && rightDist <= rightDist && 
+                 rightDist <= topDist && rightDist <= bottomDist)
+            cpOrder = CPOrder.RIGHT_LEFT;
+        else if (topDist <= leftDist && topDist <= rightDist && 
+                 topDist <= topDist && topDist <= bottomDist)
+            cpOrder = CPOrder.TOP_DOWN;
+        else if (bottomDist <= leftDist && bottomDist <= rightDist && 
+                 bottomDist <= topDist && bottomDist <= bottomDist) 
+            cpOrder = CPOrder.BOTTOM_UP;
+        return cpOrder;
     }
 
     public float getMagnitude() {
@@ -104,23 +136,16 @@ public class Edge {
         }
     }
 
-    // PERHAPS A BETTER Q TO ASK IS WHICH IS CLOSER: left endpoints or top or endpoints...
     // Apply forces from incoming edge to this edge
     public void applyBundleForces(Edge e) {
-       // Check if we need to do a vertical scan of control points 
-       boolean vertical = isVertical() || e.isVertical();
-       boolean divergent = (left.pos.y < right.pos.y && 
-                           e.left.pos.y > e.right.pos.y) ||
-                          (left.pos.y > right.pos.y &&
-                           e.left.pos.y < e.right.pos.y);
-
-       
-       // boolean vertical = false;
-       for (int i = 0; i < NUM_SUBS; i++) {
-           int index = vertical && divergent ? NUM_SUBS-1-i : i;
-           //cps[i].applyBundleForce(e.cps[i]);        
-           cps[index].applyBundleForce(e.cps[i]);        
-       }
+        CPOrder cpOrder = calcCPOrder(e);
+        for (int i = 0; i < NUM_SUBS; i++) {
+            int index = i;
+            if (cpOrder == CPOrder.TOP_DOWN || cpOrder == CPOrder.BOTTOM_UP) { 
+                index = isCPSTopDown == e.isCPSTopDown ? i : NUM_SUBS-1-i;
+            }
+            cps[index].applyBundleForce(e.cps[i]);        
+        }
     }
 
     public void update(float t) {
