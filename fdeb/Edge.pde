@@ -91,19 +91,12 @@ public class Edge {
 
     // always populate left to right
     private void initControlPoints() {
-        
-        if(right == null || left == null) {
-            //println("FUCK");
-        }
-        
         PVector dir = PVector.sub(right.getPosition(), left.getPosition()); //watch out if n1 posn == n2 posn
         dir.normalize();
         float segmentLength = len / (NUM_SUBS+1);
-        //println("SL: " + segmentLength);
         for (int i = 0; i < NUM_SUBS; i++) {
             cps[i] = new ControlPoint(PVector.add(left.getPosition(),
                                       PVector.mult(dir, segmentLength * (i+1))));
-            //println("cpx: " + cps[i].getPosition().x);
         }
     }
 
@@ -146,6 +139,22 @@ public class Edge {
             }
             cps[index].applyBundleForce(e.cps[i]);        
         }
+    }
+
+    public void drawBundeForce(Edge e)
+    {
+        CPOrder cpOrder = calcCPOrder(e);
+        for (int i = 0; i < NUM_SUBS; i++) {
+            int index = i;
+            if (cpOrder == CPOrder.TOP_DOWN || cpOrder == CPOrder.BOTTOM_UP) { 
+                index = isCPSTopDown == e.isCPSTopDown ? i : NUM_SUBS-1-i;
+            }
+            pushStyle();
+            stroke(0,150,0,100);
+            vline(cps[index].pos, e.cps[i].pos);
+            popStyle();
+        }
+    
     }
 
     public void update(float t) {

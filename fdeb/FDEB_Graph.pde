@@ -36,6 +36,14 @@ class FDEB_Graph
             n.render();
         }
     }
+    
+    public void renderBundleForce() {
+        for (Edge e1 : edges) {
+            for (Edge e2 : edges) {
+                e1.drawBundeForce(e2);
+            }
+        }
+    }
 
     void update(float t) {
         running_time += t;          

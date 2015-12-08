@@ -13,11 +13,9 @@ void setup() {
 
     // graph.generate();
     // Vertical lines test
-    //  graph.addPath(380, 400, 300, 200);
-    // graph.addPath(350, 400, 410, 250);
+     graph.addPath(200, 300, 500, 350);
+     graph.addPath(250, 320, 550, 290);
 
-//      graph.addPath(380, 400, 300, 200);
-//      graph.addPath(380, 400, 300, 200);
     //graph.addPath(100, 100, width/2 + 100, height-100);
     //graph.addPath(width - 100, 100, width/2 - 100, height -100);
 }
@@ -29,6 +27,8 @@ void draw() {
         if (graph.running_time < STARTUP_TIME || graph.total_energy > MAG_CUTOFF)
             graph.update(.001);
     }
+    if (DRAW_BUNDLE_FORCE)
+        graph.renderBundleForce();
     graph.render();
 }
 
@@ -37,6 +37,8 @@ void mousePressed() {
 }
 
 void keyPressed() {
+    if(key == 'b')
+        DRAW_BUNDLE_FORCE = !DRAW_BUNDLE_FORCE;
     if(key == ' ')
         setup();
     if (key == 'r')
