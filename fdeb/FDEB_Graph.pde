@@ -1,11 +1,15 @@
 class FDEB_Graph 
 {
+    float running_time;
+    float total_energy;
     ArrayList<Node> nodes;
     ArrayList<Edge> edges;
 
     FDEB_Graph() {
        nodes = new ArrayList<Node>();
        edges = new ArrayList<Edge>();
+       running_time = 0;
+       total_energy = 999999;
     }
 
     void addPath(float x1, float y1, float x2, float y2) {
@@ -35,7 +39,8 @@ class FDEB_Graph
     }
 
     void update(float t) {
-          
+        running_time += t;          
+        total_energy = 0;
         for (Edge e : edges) {
             e.zeroForces();
             e.applySpringForces();
@@ -48,9 +53,18 @@ class FDEB_Graph
                 }
             }
         }
-
+         
         for (Edge e : edges) {
-            e.update(t);
+            if (running_time < STARTUP_TIME || e.getMagnitude() < MAG_CUTOFF) {
+                e.update(t);
+                total_energy += e.getMagnitude();
+            }
+        }
+    }
+
+    void generate() {
+        while (running_time < STARTUP_TIME || total_energy > MAG_CUTOFF) {
+           update(.001); 
         }
     }
 }

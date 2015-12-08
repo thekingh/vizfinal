@@ -44,7 +44,7 @@ public class ControlPoint {
         float dist = PVector.dist(pos, toPos);
         
         // Update force
-        f.add(PVector.mult(force, dist * SPRING_CONST / NUM_SUBS));
+        f.add(PVector.mult(force, dist * SPRING_CONST / ( (RUBBERBANDER ? 1 : len) * NUM_SUBS)));
     }
 
     // applies attraction force from given control point onto this control point
@@ -55,6 +55,7 @@ public class ControlPoint {
         float r = PVector.dist(pos, cp.pos);
         if (r < 1) return;
         force.mult(BUNDLE_CONST/(r*r));
+        // force.mult(BUNDLE_CONST / r);
         f.add(force);
     }
 

@@ -38,6 +38,15 @@ public class Edge {
                (angle > PI*1.25 && angle < PI * 1.75);
     }
 
+    public float getMagnitude() {
+        float magnitude = 0;
+        for (ControlPoint cp : cps) {
+            magnitude += cp.getVelocity().mag();
+        }
+
+        return magnitude;
+    }
+
     // always populate left to right
     private void initControlPoints() {
         
@@ -90,9 +99,13 @@ public class Edge {
                            e.left.pos.y > e.right.pos.y) ||
                           (left.pos.y > right.pos.y &&
                            e.left.pos.y < e.right.pos.y);
+
+       
        // boolean vertical = false;
        for (int i = 0; i < NUM_SUBS; i++) {
-           cps[vertical && divergent ? NUM_SUBS-1-i : i].applyBundleForce(e.cps[i]);        
+           int index = vertical && divergent ? NUM_SUBS-1-i : i;
+           //cps[i].applyBundleForce(e.cps[i]);        
+           cps[index].applyBundleForce(e.cps[i]);        
        }
     }
 
@@ -118,9 +131,9 @@ public class Edge {
         }
 
         pushStyle();
-        fill(0);
-        
         for(int i = 0; i <= NUM_SUBS; i++) {
+            color c = color(i*8, 0,0);    
+            stroke(c);
             if(i == 0) {
                 vline(left.getPosition(), cps[i].getPosition());
             } else if (i == NUM_SUBS) {
@@ -129,7 +142,7 @@ public class Edge {
                 vline(cps[i-1].getPosition(), cps[i].getPosition());
             }
             if (i < NUM_SUBS) {
-               // cps[i].render(2);
+               //cps[i].render(2);
             }
 
         }
