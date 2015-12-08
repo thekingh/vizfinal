@@ -25,6 +25,14 @@ public class Edge {
         initControlPoints();
 
     }
+
+    private float scaleCompatibility(e)
+    {    
+    }
+
+    public float get EdgeVector(boolean )
+    {
+    }
     
     // Returns true if e is the same edge
     public boolean equals(Edge e) {
