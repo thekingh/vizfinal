@@ -32,7 +32,6 @@ class FDEB_Graph
         for (Edge e : edges) {
             e.render();
         }
-
         for (Node n : nodes) {
             n.render();
         }

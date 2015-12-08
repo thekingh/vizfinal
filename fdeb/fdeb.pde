@@ -16,6 +16,8 @@ void setup() {
     //  graph.addPath(380, 400, 300, 200);
     // graph.addPath(350, 400, 410, 250);
 
+//      graph.addPath(380, 400, 300, 200);
+//      graph.addPath(380, 400, 300, 200);
     //graph.addPath(100, 100, width/2 + 100, height-100);
     //graph.addPath(width - 100, 100, width/2 - 100, height -100);
 }
@@ -31,10 +33,13 @@ void draw() {
 }
 
 void mousePressed() {
-    setup();
+    
 }
 
 void keyPressed() {
+    if(key == ' ')
+        setup();
+    if (key == 'r')
    RUBBERBANDER = RUBBERBANDER ? false : true; 
    if (RUBBERBANDER)
         println("BAND ON");

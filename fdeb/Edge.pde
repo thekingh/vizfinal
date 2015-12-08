@@ -74,23 +74,27 @@ public class Edge {
     // Call this once per edge update cycle
     public void applySpringForces() {
         float localSF = SPRING_CONST / (NUM_SUBS+1);
+        PVector leftPos, rightPos;
         for (int i = 0; i < NUM_SUBS; i++) {
             if (i == 0) {
                 // Apply force from left
-                cps[i].applySpringForce(left.getPosition(),     len / (NUM_SUBS + 1));
-                cps[i].applySpringForce(cps[i+1].getPosition(), len / (NUM_SUBS + 1));
+                leftPos = left.getPosition();
+                rightPos = cps[i+1].getPosition();
             } else if (i == NUM_SUBS - 1) {
                 // Apply force from right
-                cps[i].applySpringForce(right.getPosition(),    len / (NUM_SUBS + 1));
-                cps[i].applySpringForce(cps[i-1].getPosition(), len / (NUM_SUBS + 1));
+                leftPos = right.getPosition();
+                rightPos = cps[i-1].getPosition();
             } else {
                 // Apply forces between cps
-                cps[i].applySpringForce(cps[i+1].getPosition(), len / (NUM_SUBS + 1));
-                cps[i].applySpringForce(cps[i-1].getPosition(), len / (NUM_SUBS + 1));
+                rightPos = cps[i+1].getPosition();
+                leftPos = cps[i-1].getPosition();
             }
+            cps[i].applySpringForce(rightPos, len);
+            cps[i].applySpringForce(leftPos, len);
         }
     }
 
+    // PERHAPS A BETTER Q TO ASK IS WHICH IS CLOSER: left endpoints or top or endpoints...
     // Apply forces from incoming edge to this edge
     public void applyBundleForces(Edge e) {
        // Check if we need to do a vertical scan of control points 
