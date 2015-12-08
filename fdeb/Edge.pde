@@ -31,6 +31,7 @@ public class Edge {
         initControlPoints();
         isCPSTopDown = left.getPosition().y < right.getPosition().y;
     }
+
 /*
     private float scaleCompatibility(e)
     {    
@@ -65,6 +66,7 @@ public class Edge {
         float bottomDist = PVector.dist(bottom.getPosition(),
                                         e.bottom.getPosition());
         CPOrder cpOrder = CPOrder.LEFT_RIGHT;
+
         if (leftDist <= leftDist && leftDist <= rightDist && 
             leftDist <= topDist && leftDist <= bottomDist)
             cpOrder = CPOrder.LEFT_RIGHT;
