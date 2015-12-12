@@ -2,7 +2,7 @@ class FDEB_Graph
 {
     float running_time;
     float total_energy;
-    float coeff[][] 
+    float ct[][] = null;
     ArrayList<Node> nodes;
     ArrayList<Edge> edges;
 
@@ -11,6 +11,7 @@ class FDEB_Graph
        edges = new ArrayList<Edge>();
        running_time = 0;
        total_energy = 999999;
+
     }
 
     void addPath(float x1, float y1, float x2, float y2) {
@@ -46,7 +47,32 @@ class FDEB_Graph
         }
     }
 
+    private void generateCT() {
+        int numEdges = edges.size();
+        ct = new float[numEdges][numEdges];
+
+        for(int i = 0; i < numEdges; i++) {
+            for(int j = 0; j < numEdges; j++) {
+
+                if( i != j) {
+                    Edge e1 = edges.get(i);
+                    Edge e2 = edges.get(j);
+
+                    CPOrder cpo= e1.calcCPOrder(e2);
+    
+                    float c_ij = e1.getCompatibilityCoefficient(e2, cpo);
+                    ct[i][j] = c_ij;
+                }
+            }
+        }
+    }
+
     void update(float t) {
+
+        if(ct == null) {
+            generateCT();
+        }
+
         running_time += t;          
         total_energy = 0;
         for (Edge e : edges) {
@@ -54,10 +80,16 @@ class FDEB_Graph
             e.applySpringForces();
         }
         // Apply bundling force from each edge to each other edge
-        for (Edge e1: edges) {
-            for (Edge e2: edges) {
-                if (!e1.equals(e2)) {
-                    e1.applyBundleForces(e2);
+        int numEdges = edges.size();
+        for(int i = 0; i < numEdges; i++) {
+            for(int j = 0; j < numEdges; j++) {
+                if( i != j) {
+                    Edge e1 = edges.get(i);
+                    Edge e2 = edges.get(j);
+
+                    if (ct[i][j] >= COEFF_CUTOFF) {
+                        e1.applyBundleForces(e2, ct[i][j]);
+                    }
                 }
             }
         }
@@ -66,7 +98,7 @@ class FDEB_Graph
 //            if (running_time < STARTUP_TIME || e.getMagnitude() < MAG_CUTOFF) {
                 e.update(t);
                 total_energy += e.getMagnitude();
-//            }
+//            }<F2>
         }
     }
 

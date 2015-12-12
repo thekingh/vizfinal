@@ -135,18 +135,19 @@ public class Edge {
     }
 
     // Apply forces from incoming edge to this edge
-    public void applyBundleForces(Edge e) {
+    public void applyBundleForces(Edge e, float c) {
+
         CPOrder cpOrder = calcCPOrder(e);
-        float coeff = getCompatibilityCoefficient(e, cpOrder);
         for (int i = 0; i < NUM_SUBS; i++) {
             int index = i;
             if (cpOrder == CPOrder.TOP_DOWN || cpOrder == CPOrder.BOTTOM_UP) { 
                 index = isCPSTopDown == e.isCPSTopDown ? i : NUM_SUBS-1-i;
             }
-            if ( coeff >= COEFF_CUTOFF)
-                cps[index].applyBundleForce(e.cps[i], coeff);        
+            if ( c >= COEFF_CUTOFF)
+                cps[index].applyBundleForce(e.cps[i], c);        
         }
     }
+
 
     public float getCompatibilityCoefficient(Edge e, CPOrder cpo) {
         float c = 1.0;
