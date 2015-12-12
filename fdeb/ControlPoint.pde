@@ -54,8 +54,8 @@ public class ControlPoint {
         
         float r = PVector.dist(pos, cp.pos);
         if (r < 1) return;
-//        force.mult(BUNDLE_CONST/(r*r));
-        force.mult(BUNDLE_CONST / r);
+/*        force.mult(BUNDLE_CONST/(r*r));*/ // BC = 20000
+        force.mult(BUNDLE_CONST / r); // BC = 8
         force.mult(coeff);
         f.add(force);
     }
