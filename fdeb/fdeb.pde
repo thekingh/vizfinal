@@ -7,7 +7,7 @@ void setup() {
     graph = new FDEB_Graph();
 
     // RANDOM GEN LINES
-    int n_paths = 300;
+    int n_paths = 50;
     BUNDLE_CONST = BUNDLE_CONST / n_paths;
     for (int i = 0; i < n_paths; i++) {
         // random
@@ -35,10 +35,9 @@ void setup() {
 
 void draw() {
     background(255);
-    float frameSkips = 100;
+    float frameSkips = 1000;
     for (int i = 0; i < frameSkips; i++) {
-        //println(i);
-        //if (graph.running_time < STARTUP_TIME || graph.total_energy > MAG_CUTOFF)
+        if (graph.running_time < STARTUP_TIME || graph.total_energy > MAG_CUTOFF)
             graph.update(.01);
     }
     if (DRAW_BUNDLE_FORCE && LENSWITCH)
