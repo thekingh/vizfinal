@@ -6,7 +6,7 @@ void setup() {
     graph = new FDEB_Graph();
 
     // RANDOM GEN LINES
-    int n_paths = 8;
+    int n_paths = 15;
     for (int i = 0; i < n_paths; i++) {
         // random
         graph.addPath(random(width), random(height), random(width), random(height));
@@ -14,8 +14,8 @@ void setup() {
 
     // graph.generate();
     // MANUAL GEN LINES
-/*     graph.addPath(240, 200, 460, 200);*/
-/*     graph.addPath(240, 200, 500, 630);*/
+     graph.addPath(240, 200, 460, 200);
+     graph.addPath(240, 200, 500, 630);
 
     //graph.addPath(100, 100, width/2 + 100, height-100);
     //graph.addPath(width - 100, 100, width/2 - 100, height -100);
