@@ -2,6 +2,7 @@ class FDEB_Graph
 {
     float running_time;
     float total_energy;
+    float coeff[][] 
     ArrayList<Node> nodes;
     ArrayList<Edge> edges;
 
@@ -62,16 +63,16 @@ class FDEB_Graph
         }
          
         for (Edge e : edges) {
-            if (running_time < STARTUP_TIME || e.getMagnitude() < MAG_CUTOFF) {
+//            if (running_time < STARTUP_TIME || e.getMagnitude() < MAG_CUTOFF) {
                 e.update(t);
                 total_energy += e.getMagnitude();
-            }
+//            }
         }
     }
 
     void generate() {
-        while (running_time < STARTUP_TIME || total_energy > MAG_CUTOFF) {
+       // while (running_time < STARTUP_TIME || total_energy > MAG_CUTOFF) {
            update(.001); 
-        }
+        //}
     }
 }

@@ -143,7 +143,8 @@ public class Edge {
             if (cpOrder == CPOrder.TOP_DOWN || cpOrder == CPOrder.BOTTOM_UP) { 
                 index = isCPSTopDown == e.isCPSTopDown ? i : NUM_SUBS-1-i;
             }
-            cps[index].applyBundleForce(e.cps[i], coeff);        
+            if ( coeff >= COEFF_CUTOFF)
+                cps[index].applyBundleForce(e.cps[i], coeff);        
         }
     }
 
@@ -158,6 +159,9 @@ public class Edge {
             c *= getLengthCoefficient(e);
         }
 
+        if (DISTSWITCH) {
+            c *= getDistanceCoefficent(e);
+        }
 /*        println("len coeff: " + c);*/
         /* TODO more constraints lol */
 
@@ -184,6 +188,21 @@ public class Edge {
         ac /= (this.len * e.len);
 /*        return abs(ac);*/
         return ac * ac;
+    }
+
+    public float getDistanceCoefficent(Edge e)
+    {
+        PVector herMid = getMidpoint(this);
+        PVector hisMid = getMidpoint(e); 
+        return 1.0 - PVector.sub(herMid, hisMid).mag()/DIST_COEFF_DENOM;
+    }
+
+    private PVector getMidpoint(Edge e)
+    {
+        PVector mid = PVector.add(e.left.pos, 
+                                  PVector.mult(PVector.sub(e.right.pos,e.left.pos),
+                                  0.5));
+        return mid;
     }
 
     public void drawBundleForce(Edge e)
@@ -225,7 +244,7 @@ public class Edge {
 
         pushStyle();
         for(int i = 0; i <= NUM_SUBS; i++) {
-            color c = color(i*8, 0,0);    
+            color c = color(0, 0,200, 50);    
             stroke(c);
             if(i == 0) {
                 vline(left.getPosition(), cps[i].getPosition());

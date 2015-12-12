@@ -1,5 +1,5 @@
-color NodeColor  = color(255, 0, 0);
-float NodeRadius = 2.0;
+color NodeColor  = color(150, 0, 0);
+float NodeRadius = 1.0;
 
 public class Node {
 
@@ -25,11 +25,9 @@ public class Node {
 
     public void render() {
         
-        pushStyle();
-            
+        pushStyle(); 
             fill(NodeColor);
             ellipse(pos.x, pos.y, NodeRadius*2, NodeRadius*2);
-
         popStyle();
     }
 
