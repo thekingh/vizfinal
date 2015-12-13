@@ -176,7 +176,8 @@ public class Edge {
 
         float lc = 1 - ((maxLen - avgLen)/avgLen);
 
-        return lc * 2;
+        assert(lc <= 1.0);
+        return lc;
     }
 
     public float getAngleCoefficient(Edge e, CPOrder cpo) {
@@ -188,6 +189,9 @@ public class Edge {
         float ac = PVector.dot(this.initState, PVector.mult(e.initState, m));
         ac /= (this.len * e.len);
 /*        return abs(ac);*/
+        if (ac*ac > 1)
+            println(ac*ac);
+        assert(ac*ac <=1.1); //TODO: quick check, we get floating point errors
         return ac * ac;
     }
 
@@ -195,6 +199,7 @@ public class Edge {
     {
         PVector herMid = getMidpoint(this);
         PVector hisMid = getMidpoint(e); 
+        assert(1.0 - PVector.sub(herMid, hisMid).mag()/DIST_COEFF_DENOM <= 1.0);
         return 1.0 - PVector.sub(herMid, hisMid).mag()/DIST_COEFF_DENOM;
     }
 

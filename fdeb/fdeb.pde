@@ -7,8 +7,8 @@ void setup() {
     graph = new FDEB_Graph();
 
     // RANDOM GEN LINES
-    int n_paths = 200;
-    BUNDLE_CONST = BUNDLE_CONST / n_paths;
+    int n_paths = 500;
+    BUNDLE_CONST = BUNDLE_CONST;
     for (int i = 0; i < n_paths; i++) {
         // random
         graph.addPath(random(width), random(height), random(width), random(height));
@@ -37,7 +37,7 @@ void draw() {
     background(255);
     float frameSkips = 1000;
     for (int i = 0; i < frameSkips; i++) {
-        if (graph.running_time < STARTUP_TIME || graph.total_energy > MAG_CUTOFF)
+//        if (graph.running_time < STARTUP_TIME || graph.total_energy > MAG_CUTOFF)
             graph.update(.01);
     }
     if (DRAW_BUNDLE_FORCE && LENSWITCH)
@@ -54,12 +54,6 @@ void keyPressed() {
         DRAW_BUNDLE_FORCE = !DRAW_BUNDLE_FORCE;
     if(key == ' ')
         setup();
-    if (key == 'r')
-   RUBBERBANDER = RUBBERBANDER ? false : true; 
-   if (RUBBERBANDER)
-        println("BAND ON");
-   else
-        println("BOND OFF");
 
     if( key == 'c') {
         LENSWITCH = !LENSWITCH;

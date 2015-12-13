@@ -11,7 +11,6 @@ class FDEB_Graph
        edges = new ArrayList<Edge>();
        running_time = 0;
        total_energy = 999999;
-
     }
 
     void addPath(float x1, float y1, float x2, float y2) {
@@ -49,6 +48,7 @@ class FDEB_Graph
 
     private void generateCT() {
         int numEdges = edges.size();
+        int ignoreCount = 0;
         ct = new float[numEdges][numEdges];
 
         for(int i = 0; i < numEdges; i++) {
@@ -61,10 +61,15 @@ class FDEB_Graph
                     CPOrder cpo= e1.calcCPOrder(e2);
     
                     float c_ij = e1.getCompatibilityCoefficient(e2, cpo);
+                    if (c_ij < COEFF_CUTOFF)
+                        ignoreCount++;
+                    assert(c_ij <= 1.0);
                     ct[i][j] = c_ij;
                 }
             }
         }
+        println("Edge Interactions: ", numEdges*numEdges, "Ignored interactions:" 
+        ,ignoreCount); 
     }
 
     void update(float t) {
@@ -95,16 +100,11 @@ class FDEB_Graph
         }
          
         for (Edge e : edges) {
-//            if (running_time < STARTUP_TIME || e.getMagnitude() < MAG_CUTOFF) {
                 e.update(t);
-                total_energy += e.getMagnitude();
-//            }<F2>
         }
     }
 
     void generate() {
-       // while (running_time < STARTUP_TIME || total_energy > MAG_CUTOFF) {
            update(.001); 
-        //}
     }
 }
