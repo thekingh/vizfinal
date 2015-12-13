@@ -44,7 +44,7 @@ public class ControlPoint {
         float dist = PVector.dist(pos, toPos);
         
         // Update force
-        f.add(PVector.mult(force, dist * SPRING_CONST / ( (len * 1.0*NUM_SUBS))));
+        f.add(PVector.mult(force, dist * SPRING_CONST / ( (len))));
     }
 
     // applies attraction force from given control point onto this control point

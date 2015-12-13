@@ -9,12 +9,12 @@ void setup() {
     graph = new FDEB_Graph();
 
     // RANDOM GEN LINES
-/*    int n_paths = 500;*/
-/*    BUNDLE_CONST = BUNDLE_CONST;*/
-/*    for (int i = 0; i < n_paths; i++) {*/
-/*        // random*/
-/*        graph.addPath(random(width), random(height), random(width), random(height));*/
-/*    }*/
+    int n_paths = 300;
+    BUNDLE_CONST = BUNDLE_CONST;
+    for (int i = 0; i < n_paths; i++) {
+        // random
+        graph.addPath(random(width), random(height), random(width), random(height));
+    }
 
     // graph.generate();
     // MANUAL GEN LINES

@@ -16,8 +16,6 @@ class HubwayBundle {
 
         buildStations(data_folder + "hubway_stations.csv");
         graph = generateMap(data_folder + "hubway_trips.csv");
-        // BAD ABSTRACTION
-        BUNDLE_CONST = BUNDLE_CONST / graph.edges.size();
     }
 
     void buildStations(String file)
@@ -50,7 +48,7 @@ class HubwayBundle {
         float lonr = lonrange.y - lonrange.x;
         String lines[] = loadStrings(file);
         //int cutoff = (int) (lines.length * .01);
-        int cutoff = 100;
+        int cutoff = 600;
         int plotted = 0;
         
         // matrix if path already exists
@@ -63,14 +61,29 @@ class HubwayBundle {
             }
         }
 
-        //for (int i = 1; plotted < cutoff && i < lines.length; i++) {
-        while (plotted < cutoff) {
-            int i = (int)random(1, lines.length-2);
+        for (int i = 1; plotted < cutoff && i < lines.length; i++) {
+        //while (plotted < cutoff) {
+            //int i = (int)random(1, lines.length-2);
             String line[] = split(lines[i], ",");
             try
             {
                 Integer start_id = Integer.parseInt(line[5]);
                 Integer end_id   = Integer.parseInt(line[7]);
+
+                // Select for paths relative to one station
+               // int[] station = {73,54}; // Harvard Brattle, Tremont
+               // boolean filter = true;
+               // for (int s=0; s<2; s++) {
+               //     if (start_id == s || end_id == s) {
+               //         filter = false;
+               //         break;
+               //     }
+               // }
+               // if (filter) continue;
+               //int station = 73;
+               //if (start_id != station && end_id != station) continue;
+
+                // Not a path to itself or a already existing path
                 if (start_id == end_id || 
                     exists[start_id][end_id] ||
                     exists[end_id][start_id]) continue;
@@ -102,7 +115,7 @@ class HubwayBundle {
     }
 
     void update() {
-        graph.update(.001);
+        graph.update(.01);
     }
 
     void render() {

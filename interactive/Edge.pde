@@ -1,4 +1,4 @@
-final int NUM_SUBS = 32;
+final int NUM_SUBS = 16;
 
 public class Edge {
 
@@ -113,7 +113,6 @@ public class Edge {
 
     // Call this once per edge update cycle
     public void applySpringForces() {
-        float localSF = SPRING_CONST / (1.0*NUM_SUBS+1);
         PVector leftPos, rightPos;
         for (int i = 0; i < NUM_SUBS; i++) {
             if (i == 0) {
@@ -244,22 +243,32 @@ public class Edge {
         }
 
         pushStyle();
-        for(int i = 0; i <= NUM_SUBS; i++) {
-            color c = color(0, 0,200, 50);    
-            stroke(c);
-            if(i == 0) {
-                vline(left.getPosition(), cps[i].getPosition());
-            } else if (i == NUM_SUBS) {
-                vline(cps[i-1].getPosition(), right.getPosition());
-            } else {
-                vline(cps[i-1].getPosition(), cps[i].getPosition());
-            }
-            if (i < NUM_SUBS) {
-               //cps[i].render(2);
-            }
+        color c = color(0, 0,200, 50);    
+        stroke(c);
+        strokeWeight(EDGE_WEIGHT);
+        if(!BEZLINE) {
+            for(int i = 0; i <= NUM_SUBS; i++) {
 
+                if(i == 0) {
+                    vline(left.getPosition(), cps[i].getPosition());
+                } else if (i == NUM_SUBS) {
+                    vline(cps[i-1].getPosition(), right.getPosition());
+                } else {
+                    vline(cps[i-1].getPosition(), cps[i].getPosition());
+                }
+                if (i < NUM_SUBS) {
+                //cps[i].render(2);
+                }
+            }
+        } else {
+            PVector[] bezCPS = new PVector[NUM_SUBS+2];   
+            bezCPS[0] = left.pos;
+            bezCPS[NUM_SUBS+1] = right.pos;
+            for(int i = 0; i < NUM_SUBS; i++) {
+                bezCPS[i+1] = cps[i].pos;
+            }
+            bezLine(bezCPS);
         }
-
         popStyle();
     }
 
