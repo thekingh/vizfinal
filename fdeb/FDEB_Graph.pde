@@ -29,6 +29,16 @@ class FDEB_Graph
         edges.add(new Edge(n1, n2));
     }
 
+    void addConstraint(float x1, float y1, float x2, float y2, float g) {
+        Node n1 = new Node(new PVector(x1, y1), edges.size() * 2);
+        Node n2 = new Node(new PVector(x2, y2), edges.size() * 2 + 1);
+
+        Constraint c =  new Constraint(n1, n2, g);
+
+        edges.add((Edge)c);
+         
+    }
+
     void render() {
         for (Edge e : edges) {
             e.render();
@@ -52,10 +62,9 @@ class FDEB_Graph
         ct = new float[numEdges][numEdges];
 
         for(int i = 0; i < numEdges; i++) {
+            Edge e1 = edges.get(i);
             for(int j = 0; j < numEdges; j++) {
-
                 if( i != j) {
-                    Edge e1 = edges.get(i);
                     Edge e2 = edges.get(j);
 
                     CPOrder cpo= e1.calcCPOrder(e2);
@@ -68,6 +77,8 @@ class FDEB_Graph
                 }
             }
         }
+
+
         println("Edge Interactions: ", numEdges*numEdges, "Ignored interactions:" 
         ,ignoreCount); 
     }
@@ -87,14 +98,15 @@ class FDEB_Graph
         // Apply bundling force from each edge to each other edge
         int numEdges = edges.size();
         for(int i = 0; i < numEdges; i++) {
+                    Edge e1 = edges.get(i);
             for(int j = 0; j < numEdges; j++) {
                 if( i != j) {
-                    Edge e1 = edges.get(i);
                     Edge e2 = edges.get(j);
 
                     if (ct[i][j] >= COEFF_CUTOFF) {
                         e1.applyBundleForces(e2, ct[i][j]);
                     }
+
                 }
             }
         }

@@ -1,5 +1,7 @@
 FDEB_Graph graph;
 
+Constraint c;
+
 void setup() {
     size(700, 700);
     DIST_COEFF_DENOM = sqrt(width*width + height*height);
@@ -7,27 +9,29 @@ void setup() {
     graph = new FDEB_Graph();
 
     // RANDOM GEN LINES
-    int n_paths = 500;
-    BUNDLE_CONST = BUNDLE_CONST;
-    for (int i = 0; i < n_paths; i++) {
-        // random
-        graph.addPath(random(width), random(height), random(width), random(height));
-    }
+/*    int n_paths = 500;*/
+/*    BUNDLE_CONST = BUNDLE_CONST;*/
+/*    for (int i = 0; i < n_paths; i++) {*/
+/*        // random*/
+/*        graph.addPath(random(width), random(height), random(width), random(height));*/
+/*    }*/
 
     // graph.generate();
     // MANUAL GEN LINES
      graph.addPath(100, 100, 100, 600);
      graph.addPath(150, 100, 150, 600);
-
      graph.addPath(200, 100, 200, 600);
      graph.addPath(250, 100, 250, 600);
      graph.addPath(300, 100, 300, 600);
-     graph.addPath(320, 100, 320, 600);
+
      graph.addPath(400, 100, 400, 600);
      graph.addPath(450, 100, 450, 600);
      graph.addPath(500, 100, 500, 600);
      graph.addPath(550, 100, 550, 600);
      graph.addPath(600, 100, 600, 600);
+
+     graph.addConstraint(350, 100, 350, 600, -100.0);
+     
 
     //graph.addPath(100, 100, width/2 + 100, height-100);
     //graph.addPath(width - 100, 100, width/2 - 100, height -100);

@@ -137,6 +137,10 @@ public class Edge {
     // Apply forces from incoming edge to this edge
     public void applyBundleForces(Edge e, float c) {
 
+        if(e instanceof Constraint) {
+            c *= ((Constraint)e).getGravity();
+        }
+
         CPOrder cpOrder = calcCPOrder(e);
         for (int i = 0; i < NUM_SUBS; i++) {
             int index = i;
