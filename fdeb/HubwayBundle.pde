@@ -48,7 +48,7 @@ class HubwayBundle {
         float lonr = lonrange.y - lonrange.x;
         String lines[] = loadStrings(file);
         //int cutoff = (int) (lines.length * .01);
-        int cutoff = 600;
+        int cutoff = 200;
         int plotted = 0;
         
         // matrix if path already exists
@@ -114,8 +114,8 @@ class HubwayBundle {
         return lerp(50, width - 50, (v - latrange.x) / (latrange.y - latrange.x));
     }
 
-    void update() {
-        graph.update(.01);
+    void update(float t) {
+        graph.update(t);
     }
 
     void render() {
