@@ -7,7 +7,7 @@ void setup() {
     graph = new FDEB_Graph();
 
     // RANDOM GEN LINES
-    int n_paths = 50;
+    int n_paths = 200;
     BUNDLE_CONST = BUNDLE_CONST / n_paths;
     for (int i = 0; i < n_paths; i++) {
         // random

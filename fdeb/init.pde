@@ -1,6 +1,6 @@
 // float SPRING_CONST = 15;
 // float BUNDLE_CONST = 1200;
-float SPRING_CONST = 10000;
+float SPRING_CONST = 15000;
 float BUNDLE_CONST = 100;
 float DIST_COEFF_DENOM = max(width,height);
 boolean SHOW_ORIGINAL = false;
