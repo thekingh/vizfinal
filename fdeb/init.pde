@@ -1,5 +1,6 @@
 float SPRING_CONST = 1500;
-float BUNDLE_CONST = 222;
+float GBUNDLE_CONST = 200000;
+float BUNDLE_CONST = GBUNDLE_CONST;
 int NUM_SUBS = 4;
 float DAMPCONST = 0.7;
 float DIST_COEFF_DENOM = max(width,height);

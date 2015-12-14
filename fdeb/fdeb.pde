@@ -9,13 +9,13 @@ void setup() {
     graph = new FDEB_Graph();
 
     // RANDOM GEN LINES
-/*    int n_paths = 300;*/
+    int n_paths = 300;
 /*    BUNDLE_CONST = BUNDLE_CONST;*/
-    graph = parseCSV("examples/data.csv");
-    //for (int i = 0; i < n_paths; i++) {
-    //    // random
-    //    graph.addPath(random(width), random(height), random(width), random(height));
-    //}
+    //graph = parseCSV("examples/data.csv");
+    for (int i = 0; i < n_paths; i++) {
+        // random
+        graph.addPath(random(width), random(height), random(width), random(height));
+    }
 
     // graph.generate();
     // MANUAL GEN LINES
@@ -41,11 +41,12 @@ void setup() {
        graph.addConstraint(300, 380, 300, 300, 2.0);
      graph.addConstraint(e.left.pos.x, e.left.pos.y, e.right.pos.x, e.right.pos.y, 2.0);
     
-    int num_constr = 5;
+    int num_constr = 3;
     for (int i = 0; i < num_constr; i++) {
         // random
         graph.addConstraint(random(width), random(height), random(width), random(height), 2.0);
     }
+    BUNDLE_CONST = GBUNDLE_CONST / (1.0 * graph.edges.size() * NUM_SUBS);
 }
 
 void draw() {

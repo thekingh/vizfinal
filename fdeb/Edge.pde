@@ -169,7 +169,6 @@ public class Edge {
                 stroke(0,100,0,10);
                 popStyle();
                 float coeff = c.getGravity();
-                println(coeff);
                 cps[i].applyBundleForce(constCP, coeff);
             }
         }
