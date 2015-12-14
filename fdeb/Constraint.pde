@@ -31,14 +31,35 @@ public class Constraint extends Edge {
         return;
     }
 
-    public void render() {
+    public PVector getClosestPoint(PVector p) {
+        PVector v = PVector.sub(p, left.pos);
+        PVector u = PVector.sub(right.pos, left.pos);
+
+        float r = PVector.dot(u, v);
+        r = r/u.magSq();
+        u.mult(r);
+
+        PVector d = PVector.sub(u, v);
+
+        PVector pt = PVector.add(p, d);
         
+        if((pt.x >= left.pos.x)   && (pt.x <= right.pos.x) &&
+           (pt.y <= bottom.pos.y) && (pt.y >= top.pos.y)) {
+            return pt;
+        } else {
+            return null;
+        }
+    }
+    
+    public void render() {
+        pushStyle();
         ellipse(n1.getPosition().x, n1.getPosition().y, 2, 2);
         ellipse(n2.getPosition().x, n2.getPosition().y, 2, 2);
 
-        stroke(255, 0, 0);
+        stroke(255, 0, 0, 100);
         line(n1.getPosition().x, n1.getPosition().y,
              n2.getPosition().x, n2.getPosition().y);
 
+        popStyle();
     }
 }

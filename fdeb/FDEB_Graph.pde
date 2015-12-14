@@ -6,10 +6,12 @@ class FDEB_Graph
     boolean cpoTable[][] = null;
     ArrayList<Node> nodes;
     ArrayList<Edge> edges;
+    ArrayList<Constraint> constraints;
 
     FDEB_Graph() {
-       nodes = new ArrayList<Node>();
-       edges = new ArrayList<Edge>();
+       nodes       = new ArrayList<Node>();
+       edges       = new ArrayList<Edge>();
+       constraints = new ArrayList<Constraint>();
        running_time = 0;
        total_energy = 999999;
     }
@@ -36,13 +38,15 @@ class FDEB_Graph
 
         Constraint c =  new Constraint(n1, n2, g);
 
-        edges.add((Edge)c);
-         
+        constraints.add(c);
     }
 
     void render() {
         for (Edge e : edges) {
             e.render();
+        }
+        for (Constraint c : constraints) {   
+            c.render();
         }
         for (Node n : nodes) {
             n.render();
@@ -107,7 +111,9 @@ class FDEB_Graph
         // Apply bundling force from each edge to each other edge
         int numEdges = edges.size();
         for(int i = 0; i < numEdges; i++) {
-                    Edge e1 = edges.get(i);
+            Edge e1 = edges.get(i);
+
+            // loop through all other edges
             for(int j = 0; j < numEdges; j++) {
                 if( i != j) {
                     Edge e2 = edges.get(j);
@@ -117,6 +123,13 @@ class FDEB_Graph
                     }
 
                 }
+            }
+            
+            // loop through all constraints
+            for(int k = 0; k < constraints.size(); k++ ) {
+                Constraint c = constraints.get(k);
+                if (DEBUG_CONSTR_ON)
+                    e1.applyConstraintForces(c);
             }
         }
          

@@ -1,4 +1,3 @@
-final int NUM_SUBS = 32;
 
 public class Edge {
 
@@ -136,11 +135,63 @@ public class Edge {
 
     // Apply forces from incoming edge to this edge
     public void applyBundleForces(Edge e, boolean matchingOrder, float c) {
+
         for (int i = 0; i < NUM_SUBS; i++) {
             int index = matchingOrder ?  i : NUM_SUBS-1-i;
             if ( c >= COEFF_CUTOFF)
                 cps[index].applyBundleForce(e.cps[i], c);        
         }
+    }
+
+    public void applyConstraintForces(Constraint c) {
+
+        /*
+            1. find closest point on edge to constraint
+            2. find that vector
+            3. for all cps that reach constraint within that vector * constant
+               apply attractive force
+        */
+
+
+        for(int i = 0; i < NUM_SUBS; i++) {
+
+            PVector edgeCP = cps[i].getPosition();
+            PVector constCP = c.getClosestPoint(edgeCP);
+            
+            if(constCP == null) {
+                continue;
+            }
+
+            float dist  = PVector.dist(constCP, edgeCP);
+
+            if( dist < MIN_CONSTRAINT_DISTANCE) {
+                pushStyle();
+                stroke(0,100,0,10);
+                popStyle();
+                float coeff = c.getGravity();
+                println(coeff);
+                cps[i].applyBundleForce(constCP, coeff);
+            }
+        }
+
+
+/*        for(int i = 0; i < NUM_SUBS; i++) {*/
+/*            float r = 1000000000.0;*/
+/*            float coeff = 1;*/
+/*            int index = 0;*/
+/**/
+/*            for (int j = 0; j < c.cps.length; j++) {*/
+/*                ControlPoint ccp = c.cps[j];*/
+/*                float dist = PVector.dist(ccp.getPosition(), cps[i].getPosition());*/
+/*                if ( r < dist ) {*/
+/*                    r = min(r,dist);*/
+/*                    coeff = c.getGravity() / (r);*/
+/*                    index = j;*/
+/*               }*/
+/*            }*/
+/*            */
+/*            cps[i].applyBundleForce(c.cps[index], coeff);*/
+/*        }*/
     }
 
 
@@ -158,9 +209,6 @@ public class Edge {
         if (DISTSWITCH) {
             c *= getDistanceCoefficent(e);
         }
-/*        println("len coeff: " + c);*/
-        /* TODO more constraints lol */
-
         return c;
     }
 
@@ -244,22 +292,32 @@ public class Edge {
         }
 
         pushStyle();
-        for(int i = 0; i <= NUM_SUBS; i++) {
-            color c = color(0, 0,200, 50);    
-            stroke(c);
-            if(i == 0) {
-                vline(left.getPosition(), cps[i].getPosition());
-            } else if (i == NUM_SUBS) {
-                vline(cps[i-1].getPosition(), right.getPosition());
-            } else {
-                vline(cps[i-1].getPosition(), cps[i].getPosition());
-            }
-            if (i < NUM_SUBS) {
-               //cps[i].render(2);
-            }
+        color c = color(0, 0,200, 50);    
+        stroke(c);
+        strokeWeight(EDGE_WEIGHT);
+        if(!BEZLINE) {
+            for(int i = 0; i <= NUM_SUBS; i++) {
 
+                if(i == 0) {
+                    vline(left.getPosition(), cps[i].getPosition());
+                } else if (i == NUM_SUBS) {
+                    vline(cps[i-1].getPosition(), right.getPosition());
+                } else {
+                    vline(cps[i-1].getPosition(), cps[i].getPosition());
+                }
+                if (i < NUM_SUBS) {
+                //cps[i].render(2);
+                }
+            }
+        } else {
+            PVector[] bezCPS = new PVector[NUM_SUBS+2];   
+            bezCPS[0] = left.pos;
+            bezCPS[NUM_SUBS+1] = right.pos;
+            for(int i = 0; i < NUM_SUBS; i++) {
+                bezCPS[i+1] = cps[i].pos;
+            }
+            bezLine(bezCPS);
         }
-
         popStyle();
     }
 
