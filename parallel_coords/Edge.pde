@@ -127,9 +127,9 @@ public class Edge {
     public void applyBundleForces(Edge e, boolean matchingOrder, float c) {
 
         for (int i = 0; i < NUM_SUBS; i++) {
-            int index = matchingOrder ?  i : NUM_SUBS-1-i;
+ //           int index = matchingOrder ?  i : NUM_SUBS-1-i;
             if ( c >= COEFF_CUTOFF)
-                cps[index].applyBundleForce(e.cps[i], c);        
+                cps[i].applyBundleForce(e.cps[i], c);        
         }
     }
 
