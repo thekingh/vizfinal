@@ -1,4 +1,5 @@
 boolean addingEdge = false;
+boolean addingConstraint = false;
 boolean selectingFirstNode = false;
 Node firstNode = null;
 Node secondNode = null;
@@ -8,31 +9,48 @@ Node moveNode = null;
 
 boolean inInteraction = false;
 
+
 void keyHandle() {
-    if (key == 'n')
+    if (key == 'n') {
        graph.addNode((float)mouseX, (float)mouseY);
-    if (key == 'e')
-    {
+    }
+    if (key == 'e') {
         if (inInteraction) return;
         inInteraction = true;
         addingEdge = true;
         selectingFirstNode = true;
     }
-    if (key == 'r')
-    {
+
+    if(key == 'c') {
+        if (inInteraction) return;
+        inInteraction      = true;
+        addingConstraint   = true;
+        selectingFirstNode = true;
+    }
+
+    if (key == 'r') {
         graph.reset();
     }
-    if (key == 'm')
-    {
+
+    if (key == 'm') {
+        if (movingNode) {
+            inInteraction = false;
+            movingNode = false;
+        }
         if (inInteraction) return;
-        inInteraction = true;
+
         movingNode = true;
+        inInteraction = true;
     }
 }
 
 void mouseHandle() {
     if (addingEdge) {
         handleAddEdge();
+    } 
+
+    if(addingConstraint) {
+        handleAddConstraint();
     }
 }
 
@@ -95,6 +113,28 @@ void handleAddEdge()
         inInteraction = false;
     }
 }
+
+void handleAddConstraint()
+{
+    if (selectingFirstNode) {
+        firstNode = hoveredNode();
+        if (firstNode == null) return;
+        selectingFirstNode = false;
+    } else {
+        Node n = hoveredNode();
+        if (n == null) return;
+        if (n.id != firstNode.id)
+            secondNode = n;
+        graph.addConstraint(firstNode, secondNode);
+        addingConstraint = false;
+/*        graph.ct = null;*/
+        firstNode = null;
+        secondNode = null;
+        inInteraction = false;
+    }
+}
+
+
 
 Node hoveredNode()
 {

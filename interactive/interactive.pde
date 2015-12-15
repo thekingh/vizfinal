@@ -3,16 +3,18 @@ FDEB_Graph graph;
 Constraint c;
 
 void setup() {
-    fullScreen();
+/*    fullScreen();*/
+    size(displayWidth, displayHeight);
     DIST_COEFF_DENOM = sqrt(width*width + height*height);
     //float dist_apart = random(height/2);
     graph = new FDEB_Graph();
 
     // RANDOM GEN LINES
-    int n_paths = 1500;
+    int n_paths = 20;
     for (int i = 0; i < n_paths; i++) {
         graph.addPath(random(width), random(height), random(width), random(height));
     }
+
 }
 
 void draw() {
@@ -21,9 +23,56 @@ void draw() {
     if (DRAW_BUNDLE_FORCE && LENSWITCH)
         graph.renderBundleForce();
     graph.render();
+
+    if(TOGGLE_HELP) 
+        drawText();
+
     Node n = hoveredNode();
     if(n == null) return;
     highlightNode(n);
+}
+
+void drawText() {
+
+    String topText = "";
+    String bottomText = "";
+
+    String addNode  = "Press 'n' to add a node";
+    String movement = (!movingNode) ? "Press 'm' to enable node movement" : 
+                                      "Click and drag a node to move it";
+    String edge = "Press 'e' then click on two nodes to connect them";
+    String help = "Press 'h' to toggle this help box";
+
+    String object = "";
+    if(addingEdge) {
+        object = " edge)";
+    } else {
+        object = " constraint)";
+    }
+
+
+    if(selectingFirstNode) {
+        bottomText = "(Click on the first node in the" + object;
+    } else if(firstNode != null) {
+        bottomText = "(Click on another node to create" + object;
+    }
+
+    topText = addNode + "\n" + movement + "\n" + edge + "\n" + help;
+
+    rect(0, 0, width * 0.25 + 10, height/8);
+
+    pushStyle();
+        textAlign(LEFT);
+        textSize(13);
+        fill(0, 0, 0);
+        text(topText, 10, 10, width, height/2);
+        
+        fill(255, 0, 0);
+        text(bottomText, mouseX + 15, mouseY - 15, width/4, height/4);
+
+    popStyle();
+
+
 }
 
 void mouseDragged()
@@ -44,6 +93,9 @@ void keyPressed() {
         DRAW_BUNDLE_FORCE = !DRAW_BUNDLE_FORCE;
     if(key == ' ')
         setup();
+
+    if(key == 'h')
+        TOGGLE_HELP = !TOGGLE_HELP;
 }
 
 void vline(PVector p1, PVector p2) {
