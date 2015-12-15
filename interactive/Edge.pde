@@ -18,7 +18,12 @@ public class Edge {
 
         this.n1 = n1;
         this.n2 = n2;
+        initEdge();
 
+    }
+
+    public void initEdge()
+    {
         left  = (n1.getPosition().x  < n2.getPosition().x) ? n1 : n2;
         right = (n1.getPosition().x >= n2.getPosition().x) ? n1 : n2;
 
@@ -32,18 +37,9 @@ public class Edge {
         isCPSTopDown = left.getPosition().y < right.getPosition().y;
 
         initState = PVector.sub(right.getPosition(), left.getPosition());
-    }
-
-/*
-    private float scaleCompatibility(e)
-    {    
-    }
-
-    public float get EdgeVector(boolean )
-    {
-    }
-*/
     
+    }
+
     // Returns true if e is the same edge
     public boolean equals(Edge e) {
         return left.id == e.left.id && right.id == e.right.id;

@@ -3,13 +3,13 @@ FDEB_Graph graph;
 Constraint c;
 
 void setup() {
-    size(700, 700);
+    fullScreen();
     DIST_COEFF_DENOM = sqrt(width*width + height*height);
     //float dist_apart = random(height/2);
     graph = new FDEB_Graph();
 
     // RANDOM GEN LINES
-    int n_paths = 10;
+    int n_paths = 1500;
     for (int i = 0; i < n_paths; i++) {
         graph.addPath(random(width), random(height), random(width), random(height));
     }
@@ -21,7 +21,14 @@ void draw() {
     if (DRAW_BUNDLE_FORCE && LENSWITCH)
         graph.renderBundleForce();
     graph.render();
-    mousePressHandle();
+    Node n = hoveredNode();
+    if(n == null) return;
+    highlightNode(n);
+}
+
+void mouseDragged()
+{
+    mouseDragHandle();
 }
 
 void mouseClicked() {

@@ -17,7 +17,7 @@ boolean ANGLESWITCH = true;
 boolean DISTSWITCH = true;
 
 float NODE_COLOR = #666666;
-float NODE_RADIUS = 0;
+float NODE_RADIUS = 5;
 float EDGE_WEIGHT = 1;
 
 float MIN_CONSTRAINT_DISTANCE = 100.0;

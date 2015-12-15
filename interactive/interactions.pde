@@ -3,8 +3,8 @@ boolean selectingFirstNode = false;
 Node firstNode = null;
 Node secondNode = null;
 
-boolean movingNode = true;
-Node theMovingNode = null;
+boolean movingNode = false;
+Node moveNode = null;
 
 boolean inInteraction = false;
 
@@ -36,25 +36,33 @@ void mouseHandle() {
     }
 }
 
-void mousePressHandle()
+void mouseDragHandle()
 {
-    if (!mousePressed) return;
-    
     if (movingNode)
     {
+        if (moveNode == null)
+            moveNode = hoveredNode();
         handleMoveNode();
     }
 }
 
+void mouseReleased()
+{
+    moveNode = null;
+}
+
 void handleMoveNode()
 {
-    println("handlingMOVE");
-    Node n  = hoveredNode();
-    if (n == null) return; 
-    n.pos.set(mouseX,mouseY);
-    //TODO: reset the edges that involve this node...
-    graph.ct = null;
-    highlightNode(n);
+    if (moveNode == null) return; 
+    moveNode.pos.set(mouseX,mouseY);
+    //update edge directions, CP ordering etc...
+    for (Edge e : graph.edges) {
+        if (e.n1.id == moveNode.id || e.n2.id == moveNode.id) {
+           e.initEdge(); 
+        }
+    }
+    //update graph CPOrder table and coeff table
+    graph.generateCT();
 }
 
 void highlightNode(Node n)
@@ -64,7 +72,7 @@ void highlightNode(Node n)
     pushStyle();
     noStroke();
     fill(255,0,0,200);
-    ellipse(x,y, NodeRadius + 10, NodeRadius + 10);
+    ellipse(x,y, NODE_RADIUS + 10, NODE_RADIUS + 10);
     popStyle();
 }
 
@@ -93,7 +101,7 @@ Node hoveredNode()
     PVector mousePos = new PVector(mouseX, mouseY);
     for (Node n : graph.nodes)
     {
-        if (PVector.dist(n.pos, mousePos) <= NodeRadius){
+        if (PVector.dist(n.pos, mousePos) <= NODE_RADIUS){
             return n;
         }
     }
