@@ -3,7 +3,7 @@ ParallelCoords graph;
 void setup() {
     size(800, 600);
 
-    graph = new ParallelCoords("./data.csv");
+    graph = new ParallelCoords("./cars2.csv");
     graph.setRect(width * 0.1, height * 0.1 , width*0.8, height * 0.8);
     graph.init();
     DIST_COEFF_DENOM = graph.h;
@@ -15,8 +15,12 @@ void draw() {
     boxBR.set(mouseX, mouseY);
     graph.update(.01);
 
-    if (boxTL != null)
+    if (boxTL != null){
+        pushStyle();
+        stroke(60,60,60,100);
         vRect(boxTL, boxBR);
+        popStyle();
+    }
     graph.render();
 }
 
@@ -70,6 +74,10 @@ void keyPressed()
 {
     if (key == ' ')
         boxTL = null;
+    if (key == 'o')
+        SHOW_ORIGINAL = !SHOW_ORIGINAL;
+    if (key == 'h')
+        SHOW_UNHIGHLIGHT = !SHOW_UNHIGHLIGHT;
 }
 
 void mouseClicked()

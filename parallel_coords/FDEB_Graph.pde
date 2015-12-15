@@ -45,6 +45,7 @@ class FDEB_Graph
         for (Edge e : edges) {
             if (SHOW_ORIGINAL)
                 e.renderNoBundle();
+            else 
                 e.render();
         }
         for (Constraint c : constraints) {   

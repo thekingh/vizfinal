@@ -4,7 +4,6 @@ float BUNDLE_CONST = GBUNDLE_CONST;
 int NUM_SUBS = 4;
 float DAMPCONST = 2;
 float DIST_COEFF_DENOM = max(width,height);
-boolean SHOW_ORIGINAL = false;
 float STARTUP_TIME = 100;
 float MAG_CUTOFF = 4;
 float COEFF_CUTOFF = 0.9;
@@ -15,6 +14,8 @@ boolean DRAW_BUNDLE_FORCE = false;
 boolean LENSWITCH = true;
 boolean ANGLESWITCH = true;
 boolean DISTSWITCH = true;
+boolean SHOW_ORIGINAL = false;
+boolean SHOW_UNHIGHLIGHT = false;
 
 float NODE_COLOR = #666666;
 float NODE_RADIUS = 5;

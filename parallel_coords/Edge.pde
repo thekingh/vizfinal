@@ -303,7 +303,11 @@ public class Edge {
             if (highlight)
                 c = color(200,0,0,60);
             else
+            {
                 c = color(0,0,200,10);
+                if(!SHOW_UNHIGHLIGHT)
+                    return;
+            }
         }
         stroke(c);
         strokeWeight(EDGE_WEIGHT);
