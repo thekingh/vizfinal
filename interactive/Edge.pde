@@ -1,4 +1,3 @@
-final int NUM_SUBS = 16;
 
 public class Edge {
 
@@ -113,6 +112,7 @@ public class Edge {
 
     // Call this once per edge update cycle
     public void applySpringForces() {
+        float localSF = SPRING_CONST / (1.0*NUM_SUBS+1);
         PVector leftPos, rightPos;
         for (int i = 0; i < NUM_SUBS; i++) {
             if (i == 0) {
@@ -135,11 +135,62 @@ public class Edge {
 
     // Apply forces from incoming edge to this edge
     public void applyBundleForces(Edge e, boolean matchingOrder, float c) {
+
         for (int i = 0; i < NUM_SUBS; i++) {
             int index = matchingOrder ?  i : NUM_SUBS-1-i;
             if ( c >= COEFF_CUTOFF)
                 cps[index].applyBundleForce(e.cps[i], c);        
         }
+    }
+
+    public void applyConstraintForces(Constraint c) {
+
+        /*
+            1. find closest point on edge to constraint
+            2. find that vector
+            3. for all cps that reach constraint within that vector * constant
+               apply attractive force
+        */
+
+
+        for(int i = 0; i < NUM_SUBS; i++) {
+
+            PVector edgeCP = cps[i].getPosition();
+            PVector constCP = c.getClosestPoint(edgeCP);
+            
+            if(constCP == null) {
+                continue;
+            }
+
+            float dist  = PVector.dist(constCP, edgeCP);
+
+            if( dist < MIN_CONSTRAINT_DISTANCE) {
+                pushStyle();
+                stroke(0,100,0,10);
+                popStyle();
+                float coeff = c.getGravity();
+                cps[i].applyBundleForce(constCP, coeff);
+            }
+        }
+
+
+/*        for(int i = 0; i < NUM_SUBS; i++) {*/
+/*            float r = 1000000000.0;*/
+/*            float coeff = 1;*/
+/*            int index = 0;*/
+/**/
+/*            for (int j = 0; j < c.cps.length; j++) {*/
+/*                ControlPoint ccp = c.cps[j];*/
+/*                float dist = PVector.dist(ccp.getPosition(), cps[i].getPosition());*/
+/*                if ( r < dist ) {*/
+/*                    r = min(r,dist);*/
+/*                    coeff = c.getGravity() / (r);*/
+/*                    index = j;*/
+/*               }*/
+/*            }*/
+/*            */
+/*            cps[i].applyBundleForce(c.cps[index], coeff);*/
+/*        }*/
     }
 
 
@@ -157,9 +208,6 @@ public class Edge {
         if (DISTSWITCH) {
             c *= getDistanceCoefficent(e);
         }
-/*        println("len coeff: " + c);*/
-        /* TODO more constraints lol */
-
         return c;
     }
 

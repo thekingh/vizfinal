@@ -46,7 +46,6 @@ void setup() {
         // random
         graph.addConstraint(random(width), random(height), random(width), random(height), 2.0);
     }
-    BUNDLE_CONST = GBUNDLE_CONST / (1.0 * graph.edges.size() * NUM_SUBS);
 }
 
 void draw() {

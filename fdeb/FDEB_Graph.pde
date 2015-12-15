@@ -100,6 +100,7 @@ class FDEB_Graph
 
         if(ct == null) {
             generateCT();
+            BUNDLE_CONST = GBUNDLE_CONST / (1.0 * graph.edges.size() * NUM_SUBS);
         }
 
         running_time += t;          

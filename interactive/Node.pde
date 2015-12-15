@@ -1,3 +1,6 @@
+color NodeColor  = color(100, 100, 100);
+float NodeRadius = 3.0;
+
 public class Node {
 
     PVector pos;
@@ -24,8 +27,8 @@ public class Node {
         
         pushStyle(); 
             noStroke();
-            fill(NODE_COLOR);
-            ellipse(pos.x, pos.y, NODE_RADIUS*2, NODE_RADIUS*2);
+            fill(NodeColor);
+            ellipse(pos.x, pos.y, NodeRadius*2, NodeRadius*2);
         popStyle();
     }
 

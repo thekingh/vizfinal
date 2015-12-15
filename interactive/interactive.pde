@@ -9,8 +9,7 @@ void setup() {
     graph = new FDEB_Graph();
 
     // RANDOM GEN LINES
-    int n_paths = 100;
-    BUNDLE_CONST = BUNDLE_CONST;
+    int n_paths = 10;
     for (int i = 0; i < n_paths; i++) {
         graph.addPath(random(width), random(height), random(width), random(height));
     }
@@ -18,20 +17,20 @@ void setup() {
 
 void draw() {
     background(255);
-    float frameSkips = 1000;
-    for (int i = 0; i < frameSkips; i++) {
-            graph.update(.01);
-    }
+    graph.update(.005);
     if (DRAW_BUNDLE_FORCE && LENSWITCH)
         graph.renderBundleForce();
     graph.render();
+    mousePressHandle();
 }
 
-void mousePressed() {
-    
+void mouseClicked() {
+    println("clicked");
+    mouseHandle();
 }
 
 void keyPressed() {
+    keyHandle(); 
     if(key == 'l')
         BEZLINE = !BEZLINE;
     if(key == 'b')
