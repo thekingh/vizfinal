@@ -208,7 +208,7 @@ public class Edge {
 
         float lc = 1 - ((maxLen - avgLen)/avgLen);
 
-        assert(lc <= 1.0);
+        //assert(lc <= 1.0);
         return lc;
     }
 
@@ -223,7 +223,7 @@ public class Edge {
 /*        return abs(ac);*/
         if (ac*ac > 1)
             println(ac*ac);
-        assert(ac*ac <=1.1); //TODO: quick check, we get floating point errors
+        //assert(ac*ac <=1.1); //TODO: quick check, we get floating point errors
         return ac * ac;
     }
 
@@ -231,7 +231,7 @@ public class Edge {
     {
         PVector herMid = getMidpoint(this);
         PVector hisMid = getMidpoint(e); 
-        assert(1.0 - PVector.sub(herMid, hisMid).mag()/DIST_COEFF_DENOM <= 1.0);
+        //assert(1.0 - PVector.sub(herMid, hisMid).mag()/DIST_COEFF_DENOM <= 1.0);
         return 1.0 - PVector.sub(herMid, hisMid).mag()/DIST_COEFF_DENOM;
     }
 

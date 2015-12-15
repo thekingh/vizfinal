@@ -1,0 +1,4 @@
+enum CPOrder
+{
+    LEFT_RIGHT, RIGHT_LEFT, TOP_DOWN, BOTTOM_UP;
+}
