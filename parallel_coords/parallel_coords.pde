@@ -1,102 +1,21 @@
-FDEB_Graph graph;
-
-Constraint c;
+ParallelCoords graph;
 
 void setup() {
-    size(700, 700);
-    DIST_COEFF_DENOM = sqrt(width*width + height*height);
-    //float dist_apart = random(height/2);
-    graph = new FDEB_Graph();
+    size(800, 600);
 
-    // RANDOM GEN LINES
-    int n_paths = 300;
-/*    BUNDLE_CONST = BUNDLE_CONST;*/
-    //graph = parseCSV("examples/data.csv");
-    for (int i = 0; i < n_paths; i++) {
-        // random
-        graph.addPath(random(width), random(height), random(width), random(height));
-    }
-
-    // graph.generate();
-    // MANUAL GEN LINES
-/*     graph.addPath(100, 100, 100, 600);*/
-/*     graph.addPath(150, 100, 150, 600);*/
-/*     graph.addPath(200, 100, 200, 600);*/
-/*     graph.addPath(250, 100, 250, 600);*/
-/*     graph.addPath(300, 100, 300, 600);*/
-/**/
-/**/
-/*     graph.addConstraint(100, 100, 600, 600, 100.0);*/
-/**/
-/*     graph.addPath(400, 100, 400, 600);*/
-/*     graph.addPath(450, 100, 450, 600);*/
-/*     graph.addPath(550, 100, 550, 600);*/
-/*     graph.addPath(600, 100, 600, 600);*/
-/**/
-/*     */
-/*    graph.addPath(100, 100, width/2 + 100, height-100);*/
-/*    graph.addPath(width - 100, 100, width/2 - 100, height -100);*/
-     Edge e = graph.edges.get((int)random(graph.edges.size()));
-
-       graph.addConstraint(300, 380, 300, 300, 2.0);
-     graph.addConstraint(e.left.pos.x, e.left.pos.y, e.right.pos.x, e.right.pos.y, 2.0);
-    
-    int num_constr = 3;
-    for (int i = 0; i < num_constr; i++) {
-        // random
-        graph.addConstraint(random(width), random(height), random(width), random(height), 2.0);
-    }
+    graph = new ParallelCoords("./data.csv");
+    //graph.setRect(100, 100, 400, 100);
+    graph.init();
 }
 
 void draw() {
+    clear();
     background(255);
-    float frameSkips = 10;
-    for (int i = 0; i < frameSkips; i++) {
-//        if (graph.running_time < STARTUP_TIME || graph.total_energy > MAG_CUTOFF)
-            graph.update(.01);
-    }
-    if (DRAW_BUNDLE_FORCE && LENSWITCH)
-        graph.renderBundleForce();
+    graph.update(.01);
+
     graph.render();
 }
 
-void mousePressed() {
-    
-}
-
-void keyPressed() {
-    if(key == 'b')
-        DRAW_BUNDLE_FORCE = !DRAW_BUNDLE_FORCE;
-    if(key == ' ')
-        setup();
-
-    if( key == 'c') {
-        LENSWITCH = !LENSWITCH;
-    }
-
-    if(key == 'a') {
-        ANGLESWITCH = !ANGLESWITCH;
-    }
-
-    if(key == 'l') {
-        BEZLINE = !BEZLINE;
-    }
-
-    if(key == 'n') {
-        NUM_SUBS += 1;
-        println(NUM_SUBS);
-        setup();
-    }
-
-    if(key == 'g') {
-        DEBUG_CONSTR_ON = !DEBUG_CONSTR_ON;
-    }
-
-    if (key == 'o')
-    {
-        SHOW_ORIGINAL = !SHOW_ORIGINAL;
-    }
-}
 void vline(PVector p1, PVector p2) {
     line(p1.x, p1.y, p2.x, p2.y);
 }

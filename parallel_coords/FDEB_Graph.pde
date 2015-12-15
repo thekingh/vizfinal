@@ -87,7 +87,7 @@ class FDEB_Graph
                     float c_ij = e1.getCompatibilityCoefficient(e2, cpo);
                     if (c_ij < COEFF_CUTOFF)
                         ignoreCount++;
-                    assert(c_ij <= 1.0);
+                    //assert(c_ij <= 1.0);
                     ct[i][j] = c_ij;
                 }
             }
@@ -102,7 +102,7 @@ class FDEB_Graph
 
         if(ct == null) {
             generateCT();
-            BUNDLE_CONST = GBUNDLE_CONST / (1.0 * graph.edges.size() * NUM_SUBS);
+            BUNDLE_CONST = GBUNDLE_CONST / (1.0 * edges.size() * NUM_SUBS);
         }
 
         running_time += t;          
