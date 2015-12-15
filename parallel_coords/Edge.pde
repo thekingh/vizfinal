@@ -5,6 +5,8 @@ public class Edge {
     ControlPoint[] cps;
     boolean isCPSTopDown;
     float len;
+    int rowID; //for parallel coords only
+    boolean highlight = false;
 
     Node left, right;
     Node top, bottom; 
@@ -12,6 +14,12 @@ public class Edge {
 
     public Edge() {
         this(new Node(), new Node());
+    }
+
+    public Edge(Node n1, Node n2, int rowID)
+    {
+        this(n1, n2);
+        this.rowID = rowID;
     }
 
     public Edge(Node n1, Node n2) {
@@ -290,7 +298,13 @@ public class Edge {
 //        }
 
         pushStyle();
-        color c = color(0, 0,200, SHOW_ORIGINAL ? 10 : 50);    
+        color c = color (0,0,200,60);
+        if (boxTL != null) {
+            if (highlight)
+                c = color(200,0,0,60);
+            else
+                c = color(0,0,200,10);
+        }
         stroke(c);
         strokeWeight(EDGE_WEIGHT);
         if(!BEZLINE) {

@@ -17,13 +17,13 @@ class FDEB_Graph
     }
 
     void addPath(float x1, float y1, float x2, float y2) {
-        addPath(new PVector(x1,y1), new PVector(x2,y2));
+        addPath(new PVector(x1,y1), new PVector(x2,y2), 0);
     }
 
-    void addPath(PVector p1, PVector p2) {
+    void addPath(PVector p1, PVector p2, int rowID) {
         Node n1 = new Node(p1, edges.size() * 2);
         Node n2 = new Node(p2, edges.size() * 2 + 1);
-        addPath(n1, n2);
+        edges.add(new Edge(n1, n2, rowID));
     }
     
     void addPath(Node n1, Node n2) {
@@ -145,3 +145,5 @@ class FDEB_Graph
            update(.001); 
     }
 }
+
+

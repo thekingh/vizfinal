@@ -5,7 +5,7 @@ public class ParallelCoords{
     float[] vmins;
     float[] vmaxs;
     String[] titles;
-    int x,y,w,h;
+    float x,y,w,h;
 
 	public ParallelCoords (String dataFile) {
         data = loadTable(dataFile, "header");
@@ -16,7 +16,7 @@ public class ParallelCoords{
         this.h = height;
     }
 
-    public void setRect(int x, int y, int w, int h) {
+    public void setRect(float x, float y,float   w,float  h) {
         this.x = x;
         this.y = y;
         this.w = w;
@@ -45,6 +45,7 @@ public class ParallelCoords{
         vmins = new float[cols];
         vmaxs = new float[cols];
         initColBounds();
+        int rowID = 0;
         for (TableRow row : data.rows()) {
             for (int col = 0; col < cols-1; col++) {
                 float interval = 1 / ((float)cols - 1);
@@ -52,8 +53,9 @@ public class ParallelCoords{
                                          scaleY(row.getFloat(col), col));
                 PVector p2 = new PVector(scaleX((col+1)*interval), 
                                          scaleY(row.getFloat(col+1), col+1)); 
-                graphs[col].addPath(p1,p2);
+                graphs[col].addPath(p1,p2,rowID);
             }
+            rowID++;
         }
     }
 
@@ -81,9 +83,26 @@ public class ParallelCoords{
 
     public void update(float t)
     {
+        ArrayList<Integer> selectedRows = new ArrayList<Integer>();
         for (FDEB_Graph g : graphs) {
             g.update(t);
         }
+        for (FDEB_Graph g : graphs)
+        {
+            for (Edge e : g.edges)
+            {
+                if (inBox(e.n1.pos) || inBox(e.n2.pos))
+                    selectedRows.add(e.rowID);
+            }
+        }
+        for (FDEB_Graph g : graphs)
+        {
+            for (Edge e : g.edges)
+            {
+                e.highlight = selectedRows.contains(e.rowID);
+            }
+        }
+        
     }
 
     public void render()
