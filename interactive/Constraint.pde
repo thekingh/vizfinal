@@ -7,7 +7,7 @@ public class Constraint extends Edge {
     }
 
     public Constraint(Node n1, Node n2) {
-        this(n1, n2, 1);
+        this(n1, n2, 3);
     }
 
     public Constraint(Node n1, Node n2, float gravity) {

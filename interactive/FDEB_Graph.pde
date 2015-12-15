@@ -43,6 +43,11 @@ class FDEB_Graph
         edges.add(new Edge(n1, n2));
     }
 
+    void addConstraint(Node n1, Node n2) {
+        Constraint c = new Constraint(n1, n2);
+        constraints.add(c);
+    }
+
     void addConstraint(float x1, float y1, float x2, float y2, float g) {
         Node n1 = new Node(new PVector(x1, y1), getNewID());
         Node n2 = new Node(new PVector(x2, y2), getNewID());
