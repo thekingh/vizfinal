@@ -3,7 +3,7 @@ ParallelCoords graph;
 void setup() {
     size(800, 600);
 
-    graph = new ParallelCoords("./data/iris.csv");
+    graph = new ParallelCoords("./data.csv");
     graph.setRect(width * 0.1, height * 0.1 , width*0.8, height * 0.8);
     graph.init();
     DIST_COEFF_DENOM = graph.h;

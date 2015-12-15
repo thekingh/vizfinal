@@ -110,5 +110,22 @@ public class ParallelCoords{
         for (FDEB_Graph g : graphs) {
             g.render();
         }
+        drawAxes();
+    }
+
+    public void drawAxes()
+    {
+        pushStyle();
+        fill(0);
+        stroke(0);
+        strokeWeight(1);
+        for (int col = 0; col < cols; col++) {
+            float xx = scaleX(((float)col/(cols-1)));
+            line(xx, y, xx, y+h);
+            textAlign(CENTER);
+            text(titles[col], xx, y - 10);
+
+        }
+        popStyle();
     }
 }
